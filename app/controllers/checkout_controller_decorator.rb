@@ -21,7 +21,9 @@ Spree::CheckoutController.class_eval do
                                   :locked => true,
                                   :label => I18n.t(:invoice_fee))
         @order.update!
-      elsif @order.adjustments.klarna_invoice_cost.count > 0 
+      end
+
+      if @order.adjustments.klarna_invoice_cost.count > 0 && !klarna_payments.any?
         @order.adjustments.klarna_invoice_cost.destroy_all
         @order.update!
       end
